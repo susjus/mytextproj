@@ -1,0 +1,16 @@
+ID: mytextproj
+_schema-version: '2.0'
+version: 0.0.1
+
+modules:
+ - name: mytexthdbmod
+   type: hdb
+   path: mytexthdbmod
+   requires:
+    - name: hdi-container
+
+resources:
+ - name: hdi-container
+   properties:
+      hdi-container-name: ${service-name}
+   type: com.sap.xs.hdi-container
