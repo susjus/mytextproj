@@ -4,3 +4,10 @@ CREATE FULLTEXT INDEX FT_TWEETS ON TWEETS(TWEET)
 CONFIGURATION 'sap.hana.ta.config::CUSTOM'
 TEXT ANALYSIS ON;
 
+-- Execute the following statement to see which company products were mentioned the most:
+SELECT TA_NORMALIZED, count(*)
+FROM "$TA_FT_TWEETS"
+WHERE TA_TYPE = 'Company'
+GROUP BY TA_NORMALIZED
+ORDER BY 2 DESC;
+
