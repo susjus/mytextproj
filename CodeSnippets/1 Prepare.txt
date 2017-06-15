@@ -1,0 +1,27 @@
+-- Create Index
+CREATE FULLTEXT INDEX FT_TWEETS ON TWEETS(TWEET)
+CONFIGURATION 'EXTRACTION_CORE'
+TEXT ANALYSIS ON;
+
+
+-- View Indexed Table Details
+SELECT
+COLUMN_NAME, STATUS, TOTAL_DOCUMENT_COUNT,
+INDEXED_DOCUMENT_COUNT, QUEUE_DOCUMENT_COUNT,
+ERROR_DOCUMENT_COUNT
+FROM M_FULLTEXT_QUEUES
+WHERE SCHEMA_NAME = 'HTA01'
+AND TABLE_NAME = 'TWEETS';
+
+--  Execute the following SQL to find out what type of entities HANA extracted from the user tweets:
+SELECT TA_TYPE, count(*)
+FROM "$TA_FT_TWEETS"
+GROUP BY TA_TYPE
+ORDER BY 2 DESC;
+
+-- Because we used EXTRACTION_CORE configuration, entities such as PERSON, PRODUCT, DATE, URL, COUNTRY etc. were extracted from the unstructured data. Let’s investigate further what kind of PRODUCTs were mentioned the most in user tweets. Execute the following query:
+SELECT TA_TOKEN, count(*)
+FROM "$TA_FT_TWEETS"
+WHERE TA_TYPE = 'PRODUCT'
+GROUP BY TA_TOKEN
+ORDER BY 2 DESC;
